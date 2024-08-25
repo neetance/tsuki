@@ -35,6 +35,7 @@ contract Tsuki is ERC721, VRFConsumerBaseV2 {
     error Not_Allowed_To_Call_Given_Method();
     error Value_Less_Than_Price();
     error Not_For_Sale_Now();
+    error Try_After_Some_Time();
 
     constructor(
         address vrfcoordinator,
@@ -96,6 +97,7 @@ contract Tsuki is ERC721, VRFConsumerBaseV2 {
     function mint(address to) external payable {
         if (msg.value < PRICE) revert Value_Less_Than_Price();
         if (supply < 5) revert Not_For_Sale_Now();
+        if (receiver != address(0)) revert Try_After_Some_Time();
 
         payable(address(validationDAO)).transfer(0.5 ether);
         receiver = to;

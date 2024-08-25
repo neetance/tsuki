@@ -3,14 +3,15 @@ pragma solidity ^0.8.18;
 
 import {ERC721} from "../lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
 import {ValidationDAO} from "./validationDAO.sol";
-import {VRFConsumerBaseV2Plus} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
+import {VRFConsumerBaseV2} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
 import {VRFV2PlusClient} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
+import {VRFCoordinatorV2Interface} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/interfaces/VRFCoordinatorV2Interface.sol";
 
-contract Tsuki is ERC721, VRFConsumerBaseV2Plus {
+contract Tsuki is ERC721, VRFConsumerBaseV2 {
     uint256 private immutable PRICE = 1 ether;
     uint256 private immutable ARTIST_MONTHLY_FEE = 0.1 ether;
     address dao;
-    ValidationDAO validationDAO = ValidationDAO(dao);
+    ValidationDAO validationDAO = ValidationDAO(payable(dao));
 
     uint256 tokenId = 0;
     uint256[] tokens;
@@ -19,6 +20,9 @@ contract Tsuki is ERC721, VRFConsumerBaseV2Plus {
     uint16 reqConfirmations = 3;
     uint32 callBackGasLim = 100000;
     address receiver;
+    uint16 minReq = 3;
+    address vrfCoordinator;
+    uint256 private supply;
 
     mapping(address => bool) private artistList;
     mapping(uint256 tokenid => address artist) private artists;
@@ -33,12 +37,14 @@ contract Tsuki is ERC721, VRFConsumerBaseV2Plus {
     error Not_For_Sale_Now();
 
     constructor(
-        address vrfCoordinator,
+        address vrfcoordinator,
         uint256 subId,
         bytes32 keyHash
-    ) ERC721("tsuki", "TSK") VRFConsumerBaseV2Plus(vrfCoordinator) {
+    ) ERC721("tsuki", "TSK") VRFConsumerBaseV2(vrfcoordinator) {
+        vrfCoordinator = vrfcoordinator;
         s_subscriptionId = subId;
         s_keyHash = keyHash;
+        supply = 0;
     }
 
     function addArtist(address user) external payable {
@@ -64,8 +70,11 @@ contract Tsuki is ERC721, VRFConsumerBaseV2Plus {
     function receiveSubmission(
         address sender,
         string memory metadata
-    ) external {
-        validationDAO.addNewSubmission(sender, metadata);
+    ) external returns (uint256) {
+        if (!isArtist(sender)) revert User_Must_Be_Artist();
+
+        uint256 id = validationDAO.addNewSubmission(sender, metadata);
+        return id;
     }
 
     function approveNew(string memory metadata) external {
@@ -75,6 +84,7 @@ contract Tsuki is ERC721, VRFConsumerBaseV2Plus {
         tokenUri[tokenId] = metadata;
         tokens.push(tokenId);
         tokenId++;
+        supply++;
     }
 
     function tokenURI(
@@ -85,28 +95,23 @@ contract Tsuki is ERC721, VRFConsumerBaseV2Plus {
 
     function mint(address to) external payable {
         if (msg.value < PRICE) revert Value_Less_Than_Price();
-        if (tokens.length < 5) revert Not_For_Sale_Now();
+        if (supply < 5) revert Not_For_Sale_Now();
 
         payable(address(validationDAO)).transfer(0.5 ether);
         receiver = to;
 
-        s_vrfCoordinator.requestRandomWords(
-            VRFV2PlusClient.RandomWordsRequest({
-                keyHash: s_keyHash,
-                subId: s_subscriptionId,
-                requestConfirmations: reqConfirmations,
-                callbackGasLimit: callBackGasLim,
-                numWords: 1,
-                extraArgs: VRFV2PlusClient._argsToBytes(
-                    VRFV2PlusClient.ExtraArgsV1({nativePayment: false})
-                )
-            })
+        VRFCoordinatorV2Interface(vrfCoordinator).requestRandomWords(
+            s_keyHash,
+            uint64(s_subscriptionId),
+            minReq,
+            callBackGasLim,
+            1
         );
     }
 
     function fulfillRandomWords(
         uint256 /*requestId*/,
-        uint256[] calldata randomWords
+        uint256[] memory randomWords
     ) internal override {
         uint256 num = randomWords[0];
         uint256 id = num % tokens.length;
@@ -117,6 +122,7 @@ contract Tsuki is ERC721, VRFConsumerBaseV2Plus {
 
         tokens[id] = tokens[tokens.length - 1];
         tokens.pop();
+        supply--;
 
         _safeMint(receiver, tokenid);
         receiver = address(0);
@@ -132,6 +138,10 @@ contract Tsuki is ERC721, VRFConsumerBaseV2Plus {
 
     function updateDaoAddress(address dAddr) external {
         dao = dAddr;
-        validationDAO = ValidationDAO(dAddr);
+        validationDAO = ValidationDAO(payable(dAddr));
+    }
+
+    function totalSupply() public view returns (uint256) {
+        return supply;
     }
 }

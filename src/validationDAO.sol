@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {VRFConsumerBaseV2Plus} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
-import {VRFV2PlusClient} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
+//import {VRFConsumerBaseV2} from "../"
+import {VRFConsumerBaseV2} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
 import {AutomationCompatibleInterface} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/automation/AutomationCompatible.sol";
 import {Tsuki} from "./tsuki.sol";
+import {VRFCoordinatorV2Interface} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/interfaces/VRFCoordinatorV2Interface.sol";
 
-contract ValidationDAO is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
+contract ValidationDAO is VRFConsumerBaseV2, AutomationCompatibleInterface {
     enum State {
         ONGOING,
         ACCEPTED,
@@ -27,6 +28,8 @@ contract ValidationDAO is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
     event newSubmission(address indexed sender, uint256 id);
     event voted(uint256 id, address indexed voter, string vote);
     event executed(uint256 id, string result);
+    event votersChosen(uint256 id, uint256 num);
+    event requestedRandomWords(uint256);
 
     error Not_Chosen_To_Vote_On_Given_Submission();
     error Already_Voted_For_Given_Submission();
@@ -37,9 +40,10 @@ contract ValidationDAO is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
     uint256 private submissionId = 0;
     uint256 private immutable INTERVAL = 5 days;
     mapping(uint256 submissionid => mapping(address voter => bool voted)) hasVoted;
-    mapping(uint256 submissionid => mapping(address validator => bool selected)) votersList;
+    mapping(uint256 submissionid => mapping(address validator => bool selected))
+        public votersList;
     address[] private validators;
-    Submission[] submissions;
+    Submission[] private submissions;
     uint256 s_subscriptionId;
     bytes32 s_keyHash;
     uint16 reqConfirmations = 3;
@@ -47,14 +51,19 @@ contract ValidationDAO is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
     uint256 private immutable reward = 0.01 ether;
     uint256 currId = 0;
     uint256 acceptanceReward = 0.1 ether;
+    uint16 minReq = 3;
     Tsuki tsuki;
+    address vrfCoordinator;
+    bool public reqInProcess = false;
+    mapping(address => bool) private isvalidator;
 
     constructor(
         uint256 subscriptionId,
-        address vrfCoordinator,
+        address vrfcoordinator,
         bytes32 keyHash,
         address tsukiAddr
-    ) VRFConsumerBaseV2Plus(vrfCoordinator) {
+    ) VRFConsumerBaseV2(vrfcoordinator) {
+        vrfCoordinator = vrfcoordinator;
         s_subscriptionId = subscriptionId;
         s_keyHash = keyHash;
         tsuki = Tsuki(tsukiAddr);
@@ -79,37 +88,38 @@ contract ValidationDAO is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
         submissionId++;
         submissions.push(submission);
 
-        uint256 size = validators.length;
-        for (uint256 i = 0; i < size; i++) {
-            if (i == validators.length) break;
+        int256 size = int256(validators.length);
+        for (int256 i = 0; i < size; i++) {
+            if (i == int256(validators.length)) break;
 
-            if (!tsuki.isArtist(validators[i])) {
-                validators[i] = validators[validators.length - 1];
+            uint256 ind = uint256(i);
+
+            if (!tsuki.isArtist(validators[ind])) {
+                isvalidator[validators[ind]] = false;
+                validators[ind] = validators[validators.length - 1];
                 validators.pop();
                 i--;
             }
         }
 
         uint256 numVoters = validators.length / 4;
-        s_vrfCoordinator.requestRandomWords(
-            VRFV2PlusClient.RandomWordsRequest({
-                keyHash: s_keyHash,
-                subId: s_subscriptionId,
-                requestConfirmations: reqConfirmations,
-                callbackGasLimit: callBackGasLim,
-                numWords: uint32(numVoters),
-                extraArgs: VRFV2PlusClient._argsToBytes(
-                    VRFV2PlusClient.ExtraArgsV1({nativePayment: false})
-                )
-            })
-        );
+        uint256 reqId = VRFCoordinatorV2Interface(vrfCoordinator)
+            .requestRandomWords(
+                s_keyHash,
+                uint64(s_subscriptionId),
+                minReq,
+                callBackGasLim,
+                uint32(numVoters)
+            );
+        reqInProcess = true;
+        emit requestedRandomWords(reqId);
 
         return submissionId - 1;
     }
 
     function fulfillRandomWords(
         uint256 /*requestId*/,
-        uint256[] calldata randomWords
+        uint256[] memory randomWords
     ) internal override {
         uint256 numVoters = randomWords.length;
         uint256 numValidators = validators.length;
@@ -122,6 +132,9 @@ contract ValidationDAO is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
 
             votersList[id][validators[num]] = true;
         }
+
+        emit votersChosen(id, numVoters);
+        reqInProcess = false;
     }
 
     function voteFor(uint256 id) external payable {
@@ -163,6 +176,7 @@ contract ValidationDAO is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
             revert Not_Allowed_To_Call_Given_Method();
 
         validators.push(user);
+        isvalidator[user] = true;
     }
 
     function removeValidator(address user) external {
@@ -178,6 +192,7 @@ contract ValidationDAO is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
 
         validators[ind] = validators[validators.length - 1];
         validators.pop();
+        isvalidator[user] = false;
     }
 
     function checkUpkeep(
@@ -213,4 +228,37 @@ contract ValidationDAO is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
 
         currId++;
     }
+
+    function getSubmission(uint256 id) public view returns (Submission memory) {
+        return submissions[id];
+    }
+
+    function isVoter(uint256 id, address user) public view returns (bool) {
+        return votersList[id][user];
+    }
+
+    function getNumValidators() public returns (uint256) {
+        uint256 size = validators.length;
+        for (uint256 i = 0; i < size; i++) {
+            if (i == validators.length) break;
+
+            if (!tsuki.isArtist(validators[i])) {
+                validators[i] = validators[validators.length - 1];
+                validators.pop();
+                i--;
+            }
+        }
+
+        return validators.length;
+    }
+
+    function isValidator(address user) public view returns (bool) {
+        return (tsuki.isArtist(user) && isvalidator[user]);
+    }
+
+    function isReq() public view returns (bool) {
+        return reqInProcess;
+    }
+
+    receive() external payable {}
 }

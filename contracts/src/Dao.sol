@@ -9,12 +9,14 @@ import {Ownable} from "../lib/openzeppelin-contracts/contracts/access/Ownable.so
 import {console} from "../lib/forge-std/src/console.sol";
 
 contract Dao is Ownable {
+    // Errors
     error Forbidden();
     error Only_Artist_Can_Vote();
     error Already_Voted();
     error Proposal_Expired();
     error Proposal_Ongoing();
 
+    // Events
     event ProposalExecuted(uint256 indexed submissionId, bool success);
     event ProposalCreated(
         uint256 indexed submissionId,
@@ -27,6 +29,7 @@ contract Dao is Ownable {
         bool vote
     );
 
+    // State variables
     mapping(uint256 => Proposal) public s_proposals; // Maps submission IDs to proposals.
     mapping(uint256 => mapping(address => bool)) public s_voted; // Tracks if an address has already voted on a submission.
 
@@ -34,6 +37,7 @@ contract Dao is Ownable {
     ArtistSubscription public s_artistSubscription;
     TsukiNFT public s_tsukiNFT;
 
+    // Structs
     struct Proposal {
         uint256 submissionId;
         uint256 timestamp;
@@ -53,6 +57,13 @@ contract Dao is Ownable {
         s_tsukiNFT = TsukiNFT(_tsukiNFT);
     }
 
+    // Functions
+
+    /**
+     * @dev Creates a new proposal for a submission.
+     * @param _submission The submission details to create a proposal for.
+     * Note: This function can only be called by the ArtistSubmission contract.
+     */
     function newSubmissionProposal(
         ArtistSubmission.Submission memory _submission
     ) public {
@@ -73,6 +84,12 @@ contract Dao is Ownable {
         );
     }
 
+    /**
+     * @dev Casts a vote on a proposal.
+     * @param _submissionId The ID of the submission to vote on.
+     * @param _vote True for a positive vote, false for a negative vote.
+     * Note: Only artists who are subscribed can vote.
+     */
     function castVote(uint256 _submissionId, bool _vote) public {
         if (!s_artistSubscription.isArtistSubscribed(msg.sender)) {
             revert Only_Artist_Can_Vote();
@@ -89,6 +106,11 @@ contract Dao is Ownable {
         emit VoteCast(_submissionId, msg.sender, _vote);
     }
 
+    /**
+     * @dev Executes a proposal if the voting period has ended and the proposal is successful.
+     * @param _submissionId The ID of the submission to execute the proposal for.
+     * Note: Only the DAO owner (admin) can execute proposals.
+     */
     function executeProposal(uint256 _submissionId) public onlyOwner {
         // Only DAO owner (admin) can execute proposals
         Proposal storage proposal = s_proposals[_submissionId];

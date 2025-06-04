@@ -7,8 +7,10 @@ import {ERC721} from "../lib/openzeppelin-contracts/contracts/token/ERC721/ERC72
 import {Ownable} from "../lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 
 contract TsukiNFT is ERC721, Ownable {
+    // Errors
     error Not_Authorized();
 
+    // State variables
     uint256 private _tokenId; // Incremental token counter
     uint256 public s_forSale; // Tracks number of NFTs available for sale
 
@@ -23,6 +25,16 @@ contract TsukiNFT is ERC721, Ownable {
         s_forSale = 0;
     }
 
+    // Functions
+
+    /**
+     * @dev Mints a new NFT and assigns it to the contract.
+     * @param _artist The address of the artist who submitted the artwork.
+     * @param _contentHash The content hash of the NFT metadata.
+     * @return The ID of the newly minted NFT.
+     * NOTE: 1.This function can only be called by the DAO contract.
+     *       2. The NFT is minted to the contract itself, and the creator and URI are set.
+     */
     function mint(
         address _artist,
         string memory _contentHash
@@ -38,6 +50,13 @@ contract TsukiNFT is ERC721, Ownable {
         return _tokenId - 1;
     }
 
+    /**
+     * @dev Transfers an NFT to a buyer after purchase, is called when a user buys an NFT and the id is selected on random.
+     * @param _buyer The address of the buyer who purchased the NFT.
+     * @param _id The ID of the NFT to transfer.
+     * @return The ID of the transferred NFT.
+     * NOTE: This function can only be called by the NFTSale contract.
+     */
     function transferToBuyer(
         address _buyer,
         uint256 _id
@@ -50,18 +69,37 @@ contract TsukiNFT is ERC721, Ownable {
         return _id;
     }
 
+    /**
+     * @dev Returns the address of the creator of a specific NFT.
+     * @param _id The ID of the NFT.
+     * @return The address of the creator of the NFT.
+     */
     function getTokenCreator(uint256 _id) public view returns (address) {
         return _tokenCreators[_id];
     }
 
+    /**
+     * @dev Retrieves the total number of NFTs minted.
+     * @return The total number of NFTs minted.
+     */
     function getTotalTokens() public view returns (uint256) {
         return _tokenId;
     }
 
+    /**
+     * @dev Used to set the DAO contract address that will handle the submission proposals.
+     * @param _daoAddress The address of the DAO contract.
+     * NOTE: This function can only be called by the owner of the contract.
+     */
     function setDao(address _daoAddress) external onlyOwner {
         _dao = Dao(_daoAddress);
     }
 
+    /**
+     * @dev Sets the NFTSale contract address that will handle the NFT sales.
+     * @param _nftSaleAddress The address of the NFTSale contract.
+     * NOTE: This function can only be called by the owner of the contract.
+     */
     function setNftSale(address _nftSaleAddress) external onlyOwner {
         _nftSale = NFTSale(_nftSaleAddress);
     }

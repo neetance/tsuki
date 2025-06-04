@@ -2,10 +2,12 @@
 pragma solidity ^0.8.20;
 
 contract ArtistSubscription {
+    // Errors
     error Already_Subscribed();
     error Insufficient_Payment();
     error Not_Artist();
 
+    // Events
     event SubscriptionCreated(
         address indexed artist,
         SubscriptionType subscriptionType,
@@ -17,6 +19,7 @@ contract ArtistSubscription {
         uint256 expirationDate
     );
 
+    // Enums and Mappings
     enum SubscriptionType {
         BASIC,
         PREMIUM,
@@ -29,6 +32,7 @@ contract ArtistSubscription {
     mapping(SubscriptionType => uint256) public s_percentageRoyalties;
     mapping(SubscriptionType => uint256) public s_maxSubmissionsPerWeek;
 
+    // Structs
     struct Subscription {
         address artist;
         SubscriptionType subscriptionType;
@@ -51,6 +55,14 @@ contract ArtistSubscription {
         s_maxSubmissionsPerWeek[SubscriptionType.PRO] = 10;
     }
 
+    // Functions
+
+    /**
+     * @dev Subscribes an artist to a subscription type with a specified duration.
+     * @param _type The type of subscription (BASIC, PREMIUM, PRO).
+     * @param _duration The duration of the subscription in seconds.
+     * NOTE: The sender must send the exact amount of ether required for the subscription type.
+     */
     function subscribe(
         SubscriptionType _type,
         uint256 _duration
@@ -76,6 +88,12 @@ contract ArtistSubscription {
         );
     }
 
+    /**
+     * @dev Renews an artist's subscription with a specified type and duration.
+     * @param _type The type of subscription (BASIC, PREMIUM, PRO).
+     * @param _duration The duration of the subscription in seconds.
+     * NOTE: The sender must send the exact amount of ether required for the subscription type.
+     */
     function renewSubscription(
         SubscriptionType _type,
         uint256 _duration
@@ -99,28 +117,54 @@ contract ArtistSubscription {
         );
     }
 
+    /**
+     * @dev Retrieves the subscription details of an artist.
+     * @param _artist The address of the artist whose subscription details are to be retrieved.
+     * @return The Subscription struct containing the artist's subscription details.
+     * NOTE: If the artist is not subscribed, the function will return a default Subscription struct with zero values.
+     */
     function getSubscription(
         address _artist
     ) public view returns (Subscription memory) {
         return s_subscriptions[_artist];
     }
 
+    /**
+     * @dev Checks if an artist is subscribed.
+     * @param _artist The address of the artist to check.
+     * @return A boolean indicating whether the artist is subscribed or not.
+     */
     function isArtistSubscribed(address _artist) public view returns (bool) {
         return s_isArtist[_artist];
     }
 
+    /**
+     * @dev Retrieves the subscription price for a given subscription type.
+     * @param _type The type of subscription (BASIC, PREMIUM, PRO).
+     * @return The price of the subscription in wei.
+     */
     function getSubscriptionPrice(
         SubscriptionType _type
     ) public view returns (uint256) {
         return s_subscriptionPrices[_type];
     }
 
+    /**
+     * @dev Retrieves the percentage royalties for a given subscription type.
+     * @param _type The type of subscription (BASIC, PREMIUM, PRO).
+     * @return The percentage royalties for the subscription type.
+     */
     function getPercentageRoyalties(
         SubscriptionType _type
     ) public view returns (uint256) {
         return s_percentageRoyalties[_type];
     }
 
+    /**
+     * @dev Retrieves the maximum number of submissions allowed per week for a given subscription type.
+     * @param _type The type of subscription (BASIC, PREMIUM, PRO).
+     * @return The maximum number of submissions allowed per week for the subscription type.
+     */
     function getMaxSubmissionsPerWeek(
         SubscriptionType _type
     ) public view returns (uint256) {

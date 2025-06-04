@@ -1,0 +1,25 @@
+# Set default behavior to automatically normalize line endings
+* text=auto eol=lf
+
+# Source code
+*.html text eol=lf
+*.css  text eol=lf
+*.js   text eol=lf
+*.jsx  text eol=lf
+*.json text eol=lf
+
+# Documentation
+*.md   text eol=lf
+
+# Git config
+.gitattributes text eol=lf
+.gitignore     text eol=lf
+
+# Ensure binary files are not modified
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.wav binary
+*.mp3 binary
+*.mp4 binary

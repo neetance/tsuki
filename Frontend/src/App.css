@@ -1,0 +1,67 @@
+/* body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.anime-gradient {
+  background: linear-gradient(90deg, #010101 0%, #9d50bb 100%);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(156, 39, 176, 0.3);
+} */
+
+/* new code */
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #0a0a0a;
+  color: white;
+  overflow-x: hidden;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* This container helps create the seamless transition between Hero and FeaturedNFTs */
+.hero-featured-container {
+  position: relative;
+  overflow: hidden;
+  /* Combined height should be enough to contain both sections */
+  min-height: 180vh;
+}
+
+/* This scroll-behavior helps with smooth transitions between sections */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Remove default focus outlines that might interfere with design */
+button:focus,
+a:focus {
+  outline: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-featured-container {
+    min-height: 160vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-featured-container {
+    min-height: 140vh;
+  }
+}

@@ -1,0 +1,299 @@
+/* DAO Header */
+.dao-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("/api/placeholder/1920/300");
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  padding: 3rem 0;
+  border-bottom: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.dao-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 211, 238, 0.1),
+    rgba(168, 85, 247, 0.1)
+  );
+  backdrop-filter: blur(8px);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  backdrop-filter: blur(12px);
+  background: rgba(17, 24, 39, 0.7);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+/* Stat Card */
+.stat-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 300ms ease;
+  background: rgba(31, 41, 55, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 211, 238, 0.05),
+    rgba(168, 85, 247, 0.05)
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(34, 211, 238, 0.2);
+  border-color: #22d3ee;
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/* Stat Icon */
+.stat-icon {
+  font-size: 2rem;
+  color: #22d3ee;
+  margin-right: 1rem;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Stat Value */
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  color: #22d3ee;
+}
+
+/* Stat Label */
+.stat-label {
+  font-size: 0.875rem;
+  color: #ffffff;
+}
+
+/* Proposals List */
+.proposals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Proposal Card */
+.proposal-card {
+  transition: all 300ms ease;
+  background: rgba(31, 41, 55, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.proposal-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 211, 238, 0.03),
+    rgba(168, 85, 247, 0.03)
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.proposal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(34, 211, 238, 0.2);
+  border-color: #22d3ee;
+}
+
+.proposal-card:hover::before {
+  opacity: 1;
+}
+
+/* Vote Bar */
+.vote-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(55, 65, 81, 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.vote-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #22d3ee, #a855f7);
+  transition: width 500ms ease;
+}
+
+/* Voting Power Circle */
+.voting-power-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+  position: relative;
+}
+
+.voting-power-circle::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 50%;
+  backdrop-filter: blur(8px);
+}
+
+/* Vote Value */
+.vote-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+}
+
+/* Vote Label */
+.vote-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 1;
+}
+
+/* Voting Details */
+.voting-details {
+  margin-top: 2rem;
+}
+
+/* Voting Detail Card */
+.voting-detail-card {
+  transition: all 300ms ease;
+  background: rgba(31, 41, 55, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.voting-detail-card:hover {
+  transform: translateY(-3px);
+  border-color: #22d3ee;
+  box-shadow: 0 8px 16px rgba(34, 211, 238, 0.15);
+}
+
+/* Proposal Form */
+.proposal-form input,
+.proposal-form select,
+.proposal-form textarea {
+  transition: all 300ms ease;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid rgba(55, 65, 81, 0.5);
+  border-radius: 0.5rem;
+  color: white;
+  backdrop-filter: blur(8px);
+}
+
+.proposal-form input:focus,
+.proposal-form select:focus,
+.proposal-form textarea:focus {
+  border-color: #22d3ee;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
+}
+
+/* Proposal Requirements */
+.proposal-requirements {
+  border-left: 3px solid #22d3ee;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 211, 238, 0.05),
+    rgba(168, 85, 247, 0.05)
+  );
+  padding: 1rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin: 1rem 0;
+  backdrop-filter: blur(8px);
+}
+
+/* Page Content */
+.page-content {
+  position: relative;
+  z-index: 10;
+  background-color: #000000;
+  min-height: 100vh;
+  color: #ffffff;
+}
+
+/* Voting Power Container */
+.voting-power {
+  background: rgba(31, 41, 55, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Create Proposal Container */
+.create-proposal {
+  background: rgba(31, 41, 55, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+  border-radius: 0.75rem;
+  padding: 2rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .voting-power-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .vote-value {
+    font-size: 2rem;
+  }
+}

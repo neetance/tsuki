@@ -1,0 +1,155 @@
+/* Buy.css */
+.buy-container {
+  min-height: 80vh;
+}
+
+/* Collection Cards */
+.collection-card {
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.collection-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(156, 39, 176, 0.2);
+  border-left: 3px solid #9d50bb;
+}
+
+/* Filter Buttons */
+.filter-btn {
+  background-color: #1f2937;
+  color: #e5e7eb;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.filter-btn:hover {
+  background-color: #374151;
+}
+
+.filter-btn.active {
+  background-color: #7e22ce;
+  color: white;
+  border-color: #a855f7;
+}
+
+/* NFT Cards */
+.nft-card {
+  border-left: 3px solid transparent;
+}
+
+.nft-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(156, 39, 176, 0.2);
+  border-left: 3px solid #9d50bb;
+}
+
+.buy-now-btn {
+  transition: all 0.3s ease;
+}
+
+.buy-now-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Load More Button */
+.load-more-btn {
+  transition: all 0.3s ease;
+  border: 2px solid #7e22ce;
+}
+
+.load-more-btn:hover {
+  background-color: #7e22ce;
+}
+
+/* How to Buy Steps */
+.step-card {
+  transition: all 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Featured Drops */
+.drop-preview img {
+  transition: all 0.3s ease;
+}
+
+.drop-preview img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
+}
+
+/* Form Elements */
+input[type="text"],
+input[type="number"],
+select {
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border: 1px solid #9d50bb;
+  box-shadow: 0 0 0 2px rgba(156, 39, 176, 0.2);
+}
+
+/* Custom Scrollbar */
+.buy-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.buy-container::-webkit-scrollbar-track {
+  background: #374151;
+  border-radius: 10px;
+}
+
+.buy-container::-webkit-scrollbar-thumb {
+  background: #9d50bb;
+  border-radius: 10px;
+}
+
+.buy-container::-webkit-scrollbar-thumb:hover {
+  background: #7e3b99;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .filters {
+    padding: 1rem;
+  }
+
+  .category-filters .filter-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .drop-info,
+  .drop-preview {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .nft-card {
+    padding: 0.5rem;
+  }
+
+  .category-filters {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+
+  .category-filters .flex {
+    width: max-content;
+  }
+
+  .step-card {
+    padding: 1rem;
+  }
+}

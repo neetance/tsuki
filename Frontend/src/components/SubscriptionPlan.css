@@ -1,0 +1,124 @@
+/* SubscriptionPlan.css */
+
+.subscription-plan {
+  background-color: #1f2937; /* bg-gray-800 */
+  border-radius: 0.75rem; /* rounded-xl */
+  padding: 1.5rem; /* p-6 */
+  border: 2px solid #374151; /* border-gray-700 */
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.subscription-plan:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.subscription-plan.popular {
+  border-color: #5d9ebe; /* border-purple-600 */
+}
+
+.subscription-plan.error {
+  border-color: #ef4444; /* border-red-500 */
+}
+
+.error-text {
+  color: #ef4444; /* text-red-500 */
+  margin: 0;
+}
+
+.popular-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #5d9ebe; /* bg-purple-600 */
+  color: white;
+  font-size: 0.75rem; /* text-xs */
+  padding: 0.25rem 0.75rem; /* px-3 py-1 */
+  border-bottom-left-radius: 0.5rem; /* rounded-bl-lg */
+}
+
+.plan-header {
+  text-align: center;
+  margin-bottom: 1.5rem; /* mb-6 */
+}
+
+.plan-title {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: bold;
+  margin-bottom: 0.5rem; /* mb-2 */
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.plan-description {
+  color: #9ca3af; /* text-gray-400 */
+  font-size: 0.875rem; /* text-sm */
+  margin-bottom: 1rem; /* mb-4 */
+  margin: 0 0 1rem 0;
+}
+
+.plan-price {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: bold;
+  margin-bottom: 0.5rem; /* mb-2 */
+  color: white;
+}
+
+.plan-period {
+  color: #9ca3af; /* text-gray-400 */
+  font-size: 0.875rem; /* text-sm */
+  margin: 0;
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0; /* mb-6 */
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem; /* space-y-3 */
+  color: white;
+}
+
+.feature-item:last-child {
+  margin-bottom: 0;
+}
+
+.feature-check {
+  color: #22c55e; /* text-green-400 */
+  margin-right: 0.5rem; /* mr-2 */
+}
+
+.plan-button {
+  width: 100%;
+  padding: 0.5rem 0; /* py-2 */
+  border-radius: 0.5rem; /* rounded-lg */
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.plan-button.filled {
+  background-color: #5d9ebe; /* bg-purple-600 */
+  color: white;
+}
+
+.plan-button.filled:hover {
+  background-color: #7c3aed; /* hover:bg-purple-500 */
+}
+
+.plan-button.outlined {
+  border: 2px solid #5d9ebe; /* border-purple-600 */
+  color: #5d9ebe; /* text-purple-400 */
+  background-color: transparent;
+}
+
+.plan-button.outlined:hover {
+  background-color: #9333ea; /* hover:bg-purple-600 */
+  color: white; /* hover:text-white */
+}

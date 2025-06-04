@@ -1,0 +1,32 @@
+# Core React and routing dependencies
+npm install react react-dom react-router-dom
+
+# For Web3 interaction
+npm install web3 ethers @web3-react/core @web3-react/injected-connector
+
+# UI components/styling
+npm install styled-components
+# OR if you prefer a UI framework:
+npm install @mui/material @emotion/react @emotion/styled
+# OR
+npm install @chakra-ui/react @emotion/react @emotion/styled framer-motion
+
+# For handling dates
+npm install date-fns
+
+# For state management (optional, contexts are already being used)
+npm install zustand
+# OR
+npm install redux react-redux @reduxjs/toolkit
+
+# For form handling
+npm install react-hook-form
+
+# For icons
+npm install react-icons
+
+# For animations (optional)
+npm install framer-motion
+
+# For notifications
+npm install react-toastify

@@ -1,0 +1,300 @@
+* Base navbar styles */ .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 1.5rem 0;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  padding: 1rem 0;
+  background-color: rgba(0, 0, 0, 0.95);
+}
+
+.navbar-container {
+  position: relative;
+  width: 100%;
+
+  background-color: #000000;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 4rem;
+  overflow: visible;
+
+  /* Make both left and right sides equally curved */
+  clip-path: polygon(
+    5% 100%,
+    /* bottom-left corner */ 0% 20%,
+    /* left curve up */ 0% 0%,
+    /* top-left */ 100% 0%,
+    /* top-right */ 100% 20%,
+    /* right curve down */ 95% 100% /* bottom-right corner */
+  );
+}
+
+/* / Logo/brand styles */
+.brand-center {
+  position: absolute;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: black;
+  padding: 1rem 3.5rem;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+
+  /* Rounded outer top corners */
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+
+  /* Trapezoid with curved top corners and slanted sides */
+  clip-path: polygon(
+    0 100%,
+    /* bottom-left */ 0 40%,
+    /* left rise */ 10% 0%,
+    /* top-left curve start */ 90% 0%,
+    /* top-right curve start */ 100% 40%,
+    /* right rise */ 100% 100% /* bottom-right */
+  );
+}
+
+/* clip-path: inset(10% 10% 10% 10% round 20%, 20%); */
+
+.brand {
+  font-family: "Squada One", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  left: 1rem;
+  font-size: 1.5rem;
+  letter-spacing: 0rem;
+  color: rgb(255, 255, 255); /* Changed to white for better contrast */
+  letter-spacing: 0.15em; /* Added gap between the letters */
+  transform: scaleX(1.5); /* Stretches letters horizontally */
+  display: inline-block; /* Needed for transform to work properly */
+  text-decoration: none;
+  display: block;
+  /* text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); */
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Central black navigation area */
+.nav-section {
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 3rem;
+  padding: 0.75rem 2rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+}
+
+/* Navigation links */
+.nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  font-weight: 500;
+}
+
+.nav-link:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -5px;
+  left: 0;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover:after {
+  width: 100%;
+}
+
+/* Connect Button */
+.connect-button-container {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.connect-button {
+  position: absolute;
+  right: 2.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: transparent;
+  border: 2px solid rgb(56, 56, 56);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.connect-button:hover {
+  background-color: #dc143c;
+  border-color: #dc143c;
+}
+
+.wallet-icon {
+  font-size: 0.9rem;
+}
+
+/* Mobile Menu */
+.menu-toggle {
+  display: none;
+  cursor: pointer;
+  z-index: 1010;
+  position: absolute;
+  right: 2rem;
+}
+
+.hamburger {
+  width: 24px;
+  height: 18px;
+  position: relative;
+}
+
+.hamburger span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 1px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: 0.25s ease-in-out;
+}
+
+.hamburger span:nth-child(1) {
+  top: 0px;
+}
+
+.hamburger span:nth-child(2) {
+  top: 8px;
+}
+
+.hamburger span:nth-child(3) {
+  top: 16px;
+}
+
+.hamburger.active span:nth-child(1) {
+  top: 8px;
+  transform: rotate(135deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+  left: -60px;
+}
+
+.hamburger.active span:nth-child(3) {
+  top: 8px;
+  transform: rotate(-135deg);
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .nav-links {
+    gap: 1.5rem;
+  }
+
+  .brand {
+    font-size: 1.5rem;
+  }
+
+  .nav-section {
+    padding: 0.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .brand-center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .connect-button-container {
+    display: none;
+  }
+
+  .nav-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.98);
+    border-radius: 0;
+    transform: translateX(-100%);
+    transition: all 0.4s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+
+  .nav-section.active {
+    transform: translateX(0);
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+  }
+
+  /* Show connect button in mobile menu */
+  .nav-section.active .connect-button {
+    display: block;
+    margin-top: 2rem;
+  }
+}
+
+/* Styling for the active links */
+.nav-link.active {
+  color: #f0f0f0;
+  font-weight: 700;
+}
+
+.nav-link.active:after {
+  width: 100%;
+}

@@ -39,7 +39,7 @@ function Navbar() {
             className="brand"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            MIKAZUKI
+            TSUKI
           </Link>
         </div>
 

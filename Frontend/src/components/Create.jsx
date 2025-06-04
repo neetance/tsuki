@@ -1,23 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Create.css";
+import submit from "../utils/submit";
 
 const CreatePage = () => {
+
+  useEffect(() => {
+  window.scrollTo({
+    top: 0,
+    behavior: "auto"
+  });
+  },[])
+
   const [activeTab, setActiveTab] = useState("post");
   const [uploadedFile, setUploadedFile] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    category: "",
-    tags: "",
-    privacy: "public",
+    tags: ""
   });
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    submit(formData.title, formData.description, uploadedFile.file)
+  }
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       setUploadedFile({
+        file: file,
         name: file.name,
         url: URL.createObjectURL(file),
+        type: file.type
       });
     }
   };
@@ -30,9 +44,7 @@ const CreatePage = () => {
   };
 
   const tabs = [
-    { id: "post", label: "New Post" },
-    { id: "media", label: "Media Upload" },
-    { id: "poll", label: "Create Poll" },
+    { id: "post", label: "New Post" }
   ];
 
   const categories = [
@@ -136,7 +148,7 @@ const CreatePage = () => {
                 />
               </div>
 
-              {/* Category and Privacy Row */}
+              {/* Category and Privacy Row
               <div className="create-form-row">
                 <div className="create-form-group">
                   <label className="create-form-label">Category</label>
@@ -170,7 +182,7 @@ const CreatePage = () => {
                     ))}
                   </select>
                 </div>
-              </div>
+              </div> */}
 
               {/* Description */}
               <div className="create-form-group">
@@ -234,7 +246,7 @@ const CreatePage = () => {
 
               {/* Submit Button */}
               <div className="create-submit-section">
-                <button className="create-submit-button">Publish Post</button>
+                <button className="create-submit-button" onClick={handleSubmit}>Publish Post</button>
               </div>
             </div>
           </div>

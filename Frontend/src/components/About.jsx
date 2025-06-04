@@ -13,7 +13,7 @@ const About = () => {
     },
     {
       icon: "🌙",
-      title: "Mikazuki Universe",
+      title: "Tsuki Universe",
       description:
         "Explore a unique anime reality where digital and physical worlds converge seamlessly.",
     },
@@ -36,7 +36,7 @@ const About = () => {
       year: "2023",
       title: "Project Genesis",
       description:
-        "Mikazuki anime*reality was conceived by a team of passionate anime creators and blockchain developers.",
+        "Tsuki anime*reality was conceived by a team of passionate anime creators and blockchain developers.",
     },
     {
       year: "2024",
@@ -65,7 +65,7 @@ const About = () => {
         <div className="hero-background">
           <img
             src="/soc13.jpg"
-            alt="Mikazuki Background"
+            alt="Tsuki Background"
             className="hero-bg-image"
           />
         </div>
@@ -73,7 +73,7 @@ const About = () => {
         <div className="hero-content">
           <div className="hero-text">
             <h1 className="hero-title">
-              Welcome to <span className="brand-text">Mikazuki</span>
+              Welcome to <span className="brand-text">Tsuki</span>
               <br />
               <span className="subtitle-text">Anime X reality</span>
             </h1>
@@ -113,7 +113,7 @@ const About = () => {
             <div className="mission-text">
               <h3>Bridging Worlds</h3>
               <p>
-                Mikazuki anime*reality is more than just an NFT marketplace.
+                Tsuki anime*reality is more than just an NFT marketplace.
                 We're creating an ecosystem where anime artists, collectors, and
                 fans can connect, create, and experience anime in entirely new
                 ways.
@@ -185,7 +185,7 @@ const About = () => {
           <div className="cta-content">
             <h2 className="cta-title">Ready to Join the Revolution?</h2>
             <p className="cta-description">
-              Be part of the Mikazuki anime*reality community and help shape the
+              Be part of the Tsuki anime*reality community and help shape the
               future of anime collectibles.
             </p>
             <div className="cta-buttons">

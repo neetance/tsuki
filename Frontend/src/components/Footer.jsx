@@ -7,7 +7,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="logo mb-4">Mikazuki</div>
+            <div className="logo mb-4">Tsuki</div>
             <p className="text-gray-400 mb-4">
               Where Anime Meets Reality in the Blockchain Space
             </p>
@@ -82,7 +82,7 @@ function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">Subscribe</h3>
             <p className="text-gray-400 mb-4">
-              Get the latest updates on Mikazuki
+              Get the latest updates on Tsuki
             </p>
             <div className="flex">
               <input
@@ -99,7 +99,7 @@ function Footer() {
 
         <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400">
-            © 2025 Mikazuki NFT. All rights reserved.
+            © 2025 Tsuki NFT. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-white text-sm">

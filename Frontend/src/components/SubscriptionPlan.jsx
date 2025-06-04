@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./SubscriptionPlan.css";
+import subscribe from "../utils/subscription";
 
 function SubscriptionPlan({ plan }) {
   // Add error handling for missing plan prop
@@ -23,6 +24,11 @@ function SubscriptionPlan({ plan }) {
     buttonStyle,
   } = plan;
 
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    subscribe(title, price);
+  }
+
   return (
     <div className={`subscription-plan ${isPopular ? "popular" : ""}`}>
       {isPopular && <div className="popular-badge">Popular</div>}
@@ -43,7 +49,7 @@ function SubscriptionPlan({ plan }) {
         ))}
       </ul>
 
-      <button
+      <button onClick={handleSubmit}
         className={`plan-button ${
           buttonStyle === "filled" ? "filled" : "outlined"
         }`}

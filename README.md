@@ -103,3 +103,8 @@ Built on the **Xsolla zkEVM Testnet**, the protocol enables artists to create an
 ## 📺 Demo
 
 Watch the demo video here: [YouTube - Tsuki Demo](https://www.youtube.com/watch?v=P8fAKpsU9yc)
+
+## Live Demo
+
+Check out the deployed project here: [Tsuki Frontend](https://tsukii-one.vercel.app/)
+

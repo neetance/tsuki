@@ -100,3 +100,6 @@ Built on the **Xsolla zkEVM Testnet**, the protocol enables artists to create an
   - Random assignment logic in purchase function
   - Tiered royalty structure on sales
 
+## 📺 Demo
+
+Watch the demo video here: [YouTube - Tsuki Demo](https://www.youtube.com/watch?v=P8fAKpsU9yc)
